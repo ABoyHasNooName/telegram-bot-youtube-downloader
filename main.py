@@ -1,13 +1,16 @@
 import logging
 
 from telegram import InlineKeyboardMarkup
-from telegram.ext import Updater, CallbackQueryHandler, MessageHandler, Filters
+from telegram.ext import Updater, CallbackQueryHandler, MessageHandler, Filters, CommandHandler
 
 from vid_utils import Video, BadLink
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
+def start(bot, update):
+    update.message.reply_text("This is a Youtube downloader bot by @AbinPauIZackariah 💚 Send A link an I'll reply with a file")
 
 def get_format(bot, update):
     logger.info("from {}: {}".format(update.message.chat_id, update.message.text)) # "history"
@@ -37,8 +40,8 @@ def download_choosen_format(bot, update):
             bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))
 
 
-updater = Updater(token=YOUR_TOKEN)
-
+updater = Updater('663491244:AAE_DJUPKUCBqv7aI2Grz6Hl3Rgat7HQ3mw')
+updater.dispatcher.add_handler(CommandHandler("start", start))
 updater.dispatcher.add_handler(MessageHandler(Filters.text, get_format))
 updater.dispatcher.add_handler(CallbackQueryHandler(download_choosen_format))
 
